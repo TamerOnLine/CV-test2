@@ -1,0 +1,79 @@
+{
+  "header": {
+    "name": "Tamer Hamad Faour",
+    "title": "Backend Developer"
+  },
+  "contact": {
+    "email": "info@tameronline.com",
+    "phone": "01607606758",
+    "location": "Werneucher Str. , Berlin"
+  },
+  "skills": [
+    "Backend Development with FastAPI & Flask",
+    "Database Design & ORM (PostgreSQL, SQLAlchemy)",
+    "API Development & Security (REST, JWT, OAuth2)",
+    "CI/CD & Deployment (GitHub Actions, Docker, Cloud)",
+    "Frontend & Integration (Streamlit, Jinja2)"
+  ],
+  "languages": [
+    "Arabic (Native)",
+    "English (A2",
+    "Basic User)",
+    "German (A2",
+    "Basic User)"
+  ],
+  "projects": [
+    [
+      "NeuroNexus AI",
+      "Open-Source-KI-Plattform (LLM-Agenten, Tools, Pipelines) mit Fokus auf Modularität & Erweiterbarkeit.",
+      "https://github.com/NeuroNexus-ai/neuronexus-ai"
+    ],
+    [
+      "LiebeMama – Website (Next.js/React)",
+      "Frontend der LiebeMama-Plattform mit responsivem Design, SEO/Metadaten und i18n. Bereitstellung via Vercel/Docker.",
+      "https://github.com/liebemama/liebemama-site"
+    ],
+    [
+      "RepoSmith TOL",
+      "Python-Paket/CLI zur schnellen Projektinitialisierung (Vorlagen, wiederverwendbare Strukturen).",
+      "https://pypi.org/project/reposmith-tol/"
+    ],
+    [
+      "DichFoto – Foto-Upload & Galerie (Python)",
+      "Upload-Verarbeitung, automatische Thumbnails, Galerieansicht; Docker-ready.",
+      "https://github.com/TamerOnLine/dichfoto"
+    ],
+    [
+      "Chat Ollama – Lokales LLM-Chat",
+      "UI für Ollama mit Streaming-Chat, Prompt-Templates, Verlauf & schnellem Modellwechsel.",
+      "https://github.com/TamerOnLine/chat_ollama"
+    ]
+  ],
+  "education": [
+    "AI (KI) Development",
+    "Mystro GmbH, Wuppertal",
+    "18.06.2024",
+    "30.12.2024 (1000 UE)",
+    "Python · Datenanalyse (EDA) · Machine Learning & Deep Learning .",
+    "NLP · Computer Vision · KI",
+    "Integrationen.",
+    "https://sway.cloud.microsoft/BVRyxoeaThCBbIsR",
+    "Praktikum",
+    "Yolo GmbH, Wuppertal",
+    "17.02.2025",
+    "14.03.2025",
+    "Projekt: „KI",
+    "gestützter Gesundheitsassistent“",
+    "Datenaufbereitung & LLM",
+    "Integration",
+    "Anbindung von Suchmaschinen & Agentensystemen",
+    "Teamarbeit & zuverlässige Umsetzung"
+  ],
+  "summary": [
+    "[About Me]",
+    "Backend Developer with expertise in FastAPI & PostgreSQL. Skilled in Streamlit apps and PDF generation. Contributor to open",
+    "source projects like NeuroServe and RepoSmith.",
+    "Focused on building scalable backend systems and contributing to impactful open",
+    "source projects."
+  ]
+}

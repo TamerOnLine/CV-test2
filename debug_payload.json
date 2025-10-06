@@ -1,0 +1,42 @@
+{
+  "rtl_mode": false,
+  "layout_name": "two-column",
+  "profile": {
+    "ui_lang": "en",
+    "header": {
+      "name": "Tamer Hamad Faour",
+      "title": "Backend Developer"
+    },
+    "contact": {
+      "email": "tamer@example.com",
+      "github": "TamerOnLine",
+      "linkedin": "tameronline"
+    },
+    "summary": [
+      "Backend developer specialized in Python/FastAPI with experience in ReportLab and Streamlit.",
+      "Building dynamic, RTL-ready resume templates with professional print layouts."
+    ],
+    "skills": [
+      "FastAPI",
+      "ReportLab",
+      "PostgreSQL",
+      "Streamlit"
+    ],
+    "languages": [
+      "Arabic — Native",
+      "English — B1"
+    ],
+    "projects": [
+      [
+        "CVEngine",
+        "Dynamic resume PDF builder with RTL",
+        "https://github.com/..."
+      ]
+    ],
+    "education": [
+      "2020–2024 · B.Sc. CS · XYZ University"
+    ]
+  },
+  "theme_name": "aqua-card",
+  "ui_lang": "en"
+}
