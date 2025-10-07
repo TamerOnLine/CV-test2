@@ -1,0 +1,38 @@
+{
+  "header": {
+    "name": "Tamer Hamad Faour",
+    "title": ""
+  },
+  "contact": {
+    "email": "tamer@tameronline.com",
+    "phone": "",
+    "website": "",
+    "github": "",
+    "linkedin": "",
+    "location": ""
+  },
+  "skills": [
+    "01"
+  ],
+  "languages": [
+    "A"
+  ],
+  "projects": [
+    [
+      "A",
+      "",
+      "https://github.com/TamerOnLine/CV-test2"
+    ]
+  ],
+  "education": [
+    [
+      "a",
+      "a",
+      "01.01.1900",
+      "01.01.2025",
+      "a",
+      "https://github.com/TamerOnLine/CV-test2"
+    ]
+  ],
+  "summary": "a"
+}
