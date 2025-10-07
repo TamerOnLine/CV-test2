@@ -1,4 +1,4 @@
-from reportlab.pdfgen.canvas import Canvas
+﻿from reportlab.pdfgen.canvas import Canvas
 from ..config import HEADING_COLOR
 from .base import Frame, RenderContext
 from .registry import register
@@ -46,3 +46,4 @@ class HeaderNameBlock:
 
 # Register the block in the system registry
 register(HeaderNameBlock())
+

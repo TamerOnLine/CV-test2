@@ -1,4 +1,4 @@
-"""Unified module for Arabic text shaping (RTL).
+﻿"""Unified module for Arabic text shaping (RTL).
 
 This module performs automatic shaping for Arabic text if both
 ``arabic_reshaper`` and ``python-bidi`` are available. Otherwise,
@@ -47,3 +47,4 @@ except Exception:
             The text unchanged (or an empty string if falsy).
         """
         return text or ""
+

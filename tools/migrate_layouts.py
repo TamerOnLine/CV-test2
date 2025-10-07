@@ -1,8 +1,8 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 import json, sys
 from pathlib import Path
 
-# مثال لخريطة قالب قديم -> JSON أولي
+# ظ…ط«ط§ظ„ ظ„ط®ط±ظٹط·ط© ظ‚ط§ظ„ط¨ ظ‚ط¯ظٹظ… -> JSON ط£ظˆظ„ظٹ
 LEGACY = {
     "one_column": [
         "header_name", "links_inline", "text_section:summary", "projects", "education"
@@ -59,3 +59,4 @@ if __name__ == "__main__":
     layouts.mkdir(exist_ok=True)
     emit_one_column(layouts / "one-column.layout.json")
     emit_two_column(layouts / "two-column.layout.json")
+

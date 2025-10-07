@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -128,3 +128,4 @@ def build_ready_from_profile(profile: dict) -> Dict[str, Any]:
         data["avatar_circle"] = p["avatar"]
 
     return data
+

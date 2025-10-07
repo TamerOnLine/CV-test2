@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.lib import colors
 from reportlab.lib.units import mm
@@ -49,7 +49,7 @@ class LinksInlineBlock:
         c.setFont(font, size)
         c.setFillColor(colors.HexColor(color))
 
-        sep = "  •  "  # bullet separator
+        sep = "  â€¢  "  # bullet separator
         line = sep.join(links)
         c.drawString(x, y, line)
 
@@ -58,3 +58,4 @@ class LinksInlineBlock:
 
 # Register the block in the system registry
 register(LinksInlineBlock())
+

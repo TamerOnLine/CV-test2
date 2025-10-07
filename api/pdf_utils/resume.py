@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from io import BytesIO
 from typing import Dict, Any, List, Tuple, Optional
@@ -13,10 +13,9 @@ from .data_utils import build_ready_from_profile
 from .config import UI_LANG
 from .theme_loader import load_and_apply
 from .block_aliases import canonicalize
-from .data_utils import build_ready_from_profile  # fallback القديم
+from .data_utils import build_ready_from_profile  
 try:
-    from .data_mapper import map_profile_to_ready  # الجديد (اختياري)
-    _HAS_MAPPER = True
+    from .data_mapper import map_profile_to_ready  
 except Exception:
     _HAS_MAPPER = False
 
@@ -461,3 +460,4 @@ def _fallback_columns() -> Dict[str, Tuple[float, float]]:
         "left": (LEFT_MARGIN, left_w),
         "right": (LEFT_MARGIN + left_w + 5 * mm, right_w),
     }
+

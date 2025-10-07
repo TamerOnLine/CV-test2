@@ -1,4 +1,4 @@
-import re
+﻿import re
 
 def extract_social_handle(kind: str, value: str):
     """
@@ -45,3 +45,4 @@ def extract_social_handle(kind: str, value: str):
         return None
 
     return None
+

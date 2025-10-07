@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from reportlab.lib import colors
 
@@ -39,3 +39,4 @@ def to_hex_color(v: str):
         colors.Color: Corresponding ReportLab color object.
     """
     return colors.HexColor(v)
+

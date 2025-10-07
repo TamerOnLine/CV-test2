@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+﻿from fastapi import APIRouter
 
 from api.registry import (
     THEME_NAMES,
@@ -31,3 +31,4 @@ def get_choices():
             "ui_lang": DEFAULT_UI,
         },
     }
+

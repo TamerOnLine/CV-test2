@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 from ..config import (
     LEFT_SEC_TITLE_TOP_GAP, LEFT_SEC_HEADING_SIZE, HEADING_COLOR,
     LEFT_SEC_RULE_COLOR, LEFT_SEC_RULE_WIDTH, LEFT_SEC_TITLE_BOTTOM_GAP,
@@ -32,3 +32,4 @@ class ContactInfoBlock:
         return y
 
 register(ContactInfoBlock())
+

@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 # Default language fallback
 DEFAULT_LANG = "en"
@@ -40,3 +40,4 @@ def t(key: str, lang: str | None = None) -> str:
     """
     lang = (lang or DEFAULT_LANG).lower()
     return LABELS.get(lang, LABELS[DEFAULT_LANG]).get(key, key)
+

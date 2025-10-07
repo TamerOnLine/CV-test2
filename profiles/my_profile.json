@@ -4,19 +4,29 @@
     "title": ""
   },
   "contact": {
-    "email": "",
+    "email": "tamer@tameronline.com",
     "phone": "",
     "website": "",
     "github": "",
     "linkedin": "",
     "location": ""
   },
-  "skills": [],
-  "languages": [],
-  "projects": [],
+  "skills": [
+    "a"
+  ],
+  "languages": [
+    "a"
+  ],
+  "projects": [
+    [
+      "a",
+      "",
+      ""
+    ]
+  ],
   "education": [
     [
-      "",
+      "a",
       "",
       "",
       "",
@@ -24,5 +34,5 @@
       ""
     ]
   ],
-  "summary": ""
+  "summary": "a"
 }

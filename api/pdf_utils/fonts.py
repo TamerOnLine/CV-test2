@@ -1,6 +1,6 @@
-# api/pdf_utils/fonts.py
+﻿# api/pdf_utils/fonts.py
 """
-🔹 Dynamic Font Loader for ReportLab
+Dynamic Font Loader for ReportLab
 Automatically scans /assets for .ttf fonts,
 normalizes their names, and registers them dynamically.
 """
@@ -15,7 +15,7 @@ BASE_DIR = os.path.dirname(__file__)
 ASSETS_DIR = os.path.join(BASE_DIR, "assets")
 REGISTERED = set()
 
-# Regex to normalize names like NotoNaskhArabic-Regular → NotoNaskhArabic
+# Regex to normalize names like NotoNaskhArabic-Regular â†’ NotoNaskhArabic
 STYLE_SUFFIX = re.compile(
     r"[-_](Regular|Bold|Medium|SemiBold|Semi-Bold|ExtraBold|Light|Black|Book|Roman)$",
     flags=re.IGNORECASE,
@@ -59,12 +59,12 @@ def _register_font_family(name: str, paths: dict):
 
         print(f"✅ Registered: {name}")
     except Exception as e:
-        print(f"⚠️ Failed to register {name}: {e}")
+        print(f"Failed to register {name}: {e}")
 
 def register_all_fonts():
     """Register all fonts dynamically"""
     if not os.path.exists(ASSETS_DIR):
-        print(f"⚠️ Font folder not found: {ASSETS_DIR}")
+        print(f"Font folder not found: {ASSETS_DIR}")
         return
     for family, paths in _scan_font_files().items():
         _register_font_family(family, paths)
@@ -90,6 +90,7 @@ def rtl(text: str) -> str:
 
 from reportlab.pdfbase import pdfmetrics
 
-print("🔍 Registered font names:")
+print("ًRegistered font names:")
 for f in pdfmetrics.getRegisteredFontNames():
     print("   -", f)
+

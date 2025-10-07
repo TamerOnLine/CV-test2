@@ -1,4 +1,4 @@
-"""PDF resume builder (v1.4 + safe fonts).
+﻿"""PDF resume builder (v1.4 + safe fonts).
 
 Generates resume PDFs using ReportLab with optional RTL/Arabic shaping.
 Adds dynamic font availability checks & safe fallbacks to avoid KeyError.
@@ -15,7 +15,7 @@ from reportlab.lib.colors import HexColor, black
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
-from reportlab.pdfbase import pdfmetrics  # للتحقّق من الخطوط المسجّلة
+from reportlab.pdfbase import pdfmetrics  
 
 import re
 
@@ -70,7 +70,7 @@ def _resolve_font_name(name: str) -> str:
     if name in regs:
         return name
     if name and name + "-Bold" in regs:
-        return name  # سيُستخدم العادي عند setFont، ولو فشل يحميه _safe_set_font
+        return name  
     if "NotoNaskhArabic" in regs:
         return "NotoNaskhArabic"
     if "DejaVuSans" in regs:
@@ -148,16 +148,12 @@ def _draw_paragraph(
     ar_font, la_font = _pick_line_font(st={"font": font})
 
     for raw in str(text).splitlines():
-        # حدّد إن كان السطر عربي
         is_ar = _is_arabic(raw)
 
-        # شكّل السطر للعربي فقط
         render = _rtl_process(raw) if (rtl and is_ar) else raw
 
-        # اختر خط السطر
         line_font = ar_font if is_ar else la_font
 
-        # لفّ السطر وفق الخط المختار
         lines = _wrap_text(c, render, w, line_font, size)
 
         for ln in lines:
@@ -257,7 +253,7 @@ def _block_contact_info(
     for _, v in contact.items():
         if v:
             y = _draw_paragraph(
-                c, x, y, w, f"• {v}", st["sizes"]["lead_body"], st["font"], st["sizes"]["body"], rtl
+                c, x, y, w, f"â€¢ {v}", st["sizes"]["lead_body"], st["font"], st["sizes"]["body"], rtl
             )
     return y - st["sp_after_list"]
 
@@ -280,7 +276,7 @@ def _block_social_links(
     y -= st["sizes"]["lead_h3"]
     for link in links:
         y = _draw_paragraph(
-            c, x, y, w, f"• {link}", st["sizes"]["lead_body"], st["font"], st["sizes"]["body"], rtl
+            c, x, y, w, f"â€¢ {link}", st["sizes"]["lead_body"], st["font"], st["sizes"]["body"], rtl
         )
     return y - st["sp_after_list"]
 
@@ -302,7 +298,7 @@ def _block_key_skills(
     y -= st["sizes"]["lead_h3"]
     for s in skills:
         y = _draw_paragraph(
-            c, x, y, w, f"• {s}", st["sizes"]["lead_body"], st["font"], st["sizes"]["body"], rtl
+            c, x, y, w, f"â€¢ {s}", st["sizes"]["lead_body"], st["font"], st["sizes"]["body"], rtl
         )
     return y - st["sp_after_list"]
 
@@ -324,7 +320,7 @@ def _block_languages(
     y -= st["sizes"]["lead_h3"]
     for s in langs:
         y = _draw_paragraph(
-            c, x, y, w, f"• {s}", st["sizes"]["lead_body"], st["font"], st["sizes"]["body"], rtl
+            c, x, y, w, f"â€¢ {s}", st["sizes"]["lead_body"], st["font"], st["sizes"]["body"], rtl
         )
     return y - st["sp_after_list"]
 
@@ -347,11 +343,11 @@ def _block_projects(
     for (title, desc, url) in projects:
         main = title
         if desc:
-            main += f" — {desc}"
+            main += f" â€” {desc}"
         if url:
             main += f" ({url})"
         y = _draw_paragraph(
-            c, x, y, w, f"• {main}", st["sizes"]["lead_body"], st["font"], st["sizes"]["body"], rtl
+            c, x, y, w, f"â€¢ {main}", st["sizes"]["lead_body"], st["font"], st["sizes"]["body"], rtl
         )
     return y - st["sp_after_list"]
 
@@ -373,7 +369,7 @@ def _block_education(
     y -= st["sizes"]["lead_h3"]
     for s in edu:
         y = _draw_paragraph(
-            c, x, y, w, f"• {s}", st["sizes"]["lead_body"], st["font"], st["sizes"]["body"], rtl
+            c, x, y, w, f"â€¢ {s}", st["sizes"]["lead_body"], st["font"], st["sizes"]["body"], rtl
         )
     return y - st["sp_after_list"]
 
@@ -451,7 +447,6 @@ def build_resume_pdf(*, data: Dict[str, Any]) -> bytes:
     _deep_update(style, theme_inline)
     _deep_update(style, layout.get("overrides") or {})
 
-    # اجعل أسماء الخطوط تشير لأسماء متاحة فعلًا
     base = _resolve_font_name(style["fonts"].get("base", "Helvetica"))
     bold = _resolve_font_name(style["fonts"].get("bold", "Helvetica-Bold"))
     head = _resolve_font_name(style["fonts"].get("heading", bold or base))
@@ -547,3 +542,4 @@ def build_resume_pdf(*, data: Dict[str, Any]) -> bytes:
     c.showPage()
     c.save()
     return buf.getvalue()
+

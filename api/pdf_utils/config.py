@@ -1,4 +1,4 @@
-from reportlab.lib import colors
+﻿from reportlab.lib import colors
 from reportlab.lib.units import mm
 
 """
@@ -114,7 +114,7 @@ EDU_BLOCK_GAP = 20
 # -----------------------------
 # LinkedIn Redirect
 # -----------------------------
-LINKEDIN_REDIRECT_URL = "https://tamer.dev/in"
+LINKEDIN_REDIRECT_URL = "https://www.linkedin.com/in/"
 USE_LINKEDIN_REDIRECT = False
 USE_MOBILE_LINKEDIN = False
 
@@ -123,3 +123,4 @@ USE_MOBILE_LINKEDIN = False
 # -----------------------------
 # Supported: "en", "de", "ar"
 UI_LANG = "en"
+
