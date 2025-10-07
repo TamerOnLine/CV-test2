@@ -9,6 +9,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Any, Dict, Optional
+import base64
+
 
 from fastapi import FastAPI, Response
 
@@ -73,10 +75,30 @@ def generate_form_simple(payload: Dict[str, Any]) -> Response:
             path = LAYOUTS_DIR / layout_name
             try:
                 layout_inline = json.loads(path.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 print(f"[WARN] Could not read layout '{path}': {exc}")
 
+    # ✅ فك ترميز الصور base64 ضمن avatar_circle blocks
+    import base64
+
+    def _decode_headshots(node):
+        if isinstance(node, dict):
+            if node.get("block_id") == "avatar_circle":
+                data = node.setdefault("data", {})
+                b64 = data.get("photo_b64")
+                if b64 and not data.get("photo_bytes"):
+                    try:
+                        data["photo_bytes"] = base64.b64decode(b64.encode("ascii"))
+                    except Exception:
+                        data["photo_bytes"] = None
+            for v in node.values():
+                _decode_headshots(v)
+        elif isinstance(node, list):
+            for it in node:
+                _decode_headshots(it)
+
     if layout_inline:
+        _decode_headshots(layout_inline)
         data["layout_inline"] = layout_inline
 
     if isinstance(data["profile"], dict):
