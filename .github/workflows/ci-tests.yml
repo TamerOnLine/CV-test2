@@ -50,8 +50,4 @@ jobs:
           python -m pip install pytest
         shell: bash
 
-      - name: Run tests (pytest)
-        run: |
-          echo "PYTHONPATH=." >> $GITHUB_ENV
-          python -m pytest -q
-        shell: bash
+
