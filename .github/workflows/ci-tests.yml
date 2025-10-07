@@ -3,9 +3,19 @@ name: CI • Pytest
 on:
   push:
     branches: [ main, master ]
+    paths:
+      - '**.py'
+      - requirements.txt
+      - pytest.ini
+      - .github/workflows/ci-tests.yml
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch:
+    paths:
+      - '**.py'
+      - requirements.txt
+      - pytest.ini
+      - .github/workflows/ci-tests.yml
+  workflow_dispatch:  
 
 jobs:
   tests:
@@ -25,7 +35,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: "pip"     # يفعّل كاش pip تلقائيًا
+          cache: "pip"
 
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
@@ -40,7 +50,6 @@ jobs:
           python -m pip install pytest
         shell: bash
 
-      # على ويندوز، استخدم shell PowerShell لأوامر تعدد الأسطر إن رغبت
       - name: Run tests (pytest)
         run: |
           echo "PYTHONPATH=." >> $GITHUB_ENV

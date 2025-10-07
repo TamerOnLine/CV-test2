@@ -137,7 +137,8 @@ fastapi-streamlit-template/
 ```
 ---
 
-![CI • Pytest](https://github.com/USERNAME/REPO/actions/workflows/ci-tests.yml/badge.svg)
+![CI • Pytest](https://github.com/TamerOnLine/CV-test2/actions/workflows/ci-tests.yml/badge.svg)
+
 
 ---
 
