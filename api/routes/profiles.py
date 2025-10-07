@@ -1,9 +1,12 @@
 ﻿from pathlib import Path
-import os
-import json
-import re
-from fastapi import APIRouter, HTTPException, Query, Body
+import os, json, re
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, EmailStr
+
+# المجلد الافتراضي: profiles/ في جذر المشروع
+DEFAULT_PROFILES_DIR = Path(os.getenv("PROFILES_DIR", "profiles")).resolve()
+PROFILES_DIR: Path = DEFAULT_PROFILES_DIR
+
 
 # ===================================================================
 # المسار الافتراضي لتخزين ملفات البروفايلات (يتم تغييره أثناء الاختبار)
