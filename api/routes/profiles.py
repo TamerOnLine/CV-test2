@@ -1,47 +1,49 @@
-# api/routes/profiles.py
-from __future__ import annotations
-from pathlib import Path
+# api/routers/profiles.py
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, Field
-from typing import List, Optional, Dict, Any
+from typing import List
+from pathlib import Path
 import json
 
-router = APIRouter()
+from api.models.profile import Profile
 
-APP_ROOT = Path(__file__).resolve().parents[1]
-PROFILES_DIR = APP_ROOT / "profiles"
-PROFILES_DIR.mkdir(exist_ok=True)
+router = APIRouter(prefix="/api/profiles", tags=["profiles"])
 
-class Profile(BaseModel):
-    header: Dict[str, str] = Field(default_factory=dict)
-    contact: Dict[str, str] = Field(default_factory=dict)
-    summary: Optional[str] = ""
-    skills: List[str] = Field(default_factory=list)
-    languages: List[str] = Field(default_factory=list)
-    projects: List[List[str]] = Field(default_factory=list)      # [[title, desc, url], ...]
-    education: List[List[str]] = Field(default_factory=list)     # [[title, school, start, end, details, url], ...]
-    social: Dict[str, str] = Field(default_factory=dict)
-    avatar_b64: Optional[str] = None
+BASE_DIR = Path(__file__).resolve().parents[2]  # عدّل لو مسارك مختلف
+PROFILES_DIR = (BASE_DIR / "profiles")
+PROFILES_DIR.mkdir(parents=True, exist_ok=True)
 
-def _read_json(p: Path) -> Dict[str, Any]:
-    return json.loads(p.read_text(encoding="utf-8"))
+def _path_for(name: str) -> Path:
+    safe = "".join(c for c in name.strip() if c.isalnum() or c in "-_ .").strip()
+    if not safe:
+        raise HTTPException(status_code=400, detail="Invalid profile name")
+    return PROFILES_DIR / f"{safe}.json"
 
-def _write_json(p: Path, data: Dict[str, Any]) -> None:
-    p.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-
-@router.get("/profiles", response_model=List[str])
+@router.get("/", response_model=List[str])
 def list_profiles():
-    return [p.stem for p in PROFILES_DIR.glob("*.json")]
+    return sorted(p.stem for p in PROFILES_DIR.glob("*.json"))
 
-@router.get("/profiles/{name}", response_model=Profile)
+@router.get("/{name}", response_model=Profile)
 def get_profile(name: str):
-    fp = PROFILES_DIR / f"{name}.json"
-    if not fp.exists():
-        raise HTTPException(404, f"profile '{name}' not found")
-    return _read_json(fp)
+    p = _path_for(name)
+    if not p.exists():
+        raise HTTPException(status_code=404, detail="Profile not found")
+    try:
+        data = json.loads(p.read_text("utf-8"))
+        return Profile.model_validate(data)  # يعيد مع التحقق
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Corrupt file: {e}")
 
-@router.post("/profiles/{name}", response_model=Profile)
-def save_profile(name: str, payload: Profile):
-    fp = PROFILES_DIR / f"{name}.json"
-    _write_json(fp, payload.model_dump())
-    return payload
+@router.post("/{name}", response_model=Profile)
+def save_profile(name: str, profile: Profile):
+    p = _path_for(name)
+    data = profile.model_dump(exclude_none=True)
+    p.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    return profile
+
+@router.delete("/{name}")
+def delete_profile(name: str):
+    p = _path_for(name)
+    if not p.exists():
+        raise HTTPException(status_code=404, detail="Profile not found")
+    p.unlink()
+    return {"ok": True}

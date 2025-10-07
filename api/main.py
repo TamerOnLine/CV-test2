@@ -41,7 +41,7 @@ app.add_middleware(
     allow_credentials=True,
 )
 
-# تسجيل راوتر إدارة البروファيلات
+# تسجيل راوتر إدارة البروفايلات
 app.include_router(profiles_routes.router, prefix="/api")
 
 
