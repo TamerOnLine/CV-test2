@@ -135,6 +135,9 @@ fastapi-streamlit-template/
 ├── LICENSE
 └── README.md
 ```
+---
+
+![CI • Pytest](https://github.com/USERNAME/REPO/actions/workflows/ci-tests.yml/badge.svg)
 
 ---
 

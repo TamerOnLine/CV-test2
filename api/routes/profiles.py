@@ -1,49 +1,117 @@
-# api/routers/profiles.py
-from fastapi import APIRouter, HTTPException
-from typing import List
+# api/routes/profiles.py
+from fastapi import APIRouter, HTTPException, Response
 from pathlib import Path
+from pydantic import ValidationError
+from api.models.profile import Profile
+import re
 import json
 
-from api.models.profile import Profile
+router = APIRouter(tags=["profiles"])  # لا نضع prefix هنا لأن main.py يضيف "/api"
 
-router = APIRouter(prefix="/api/profiles", tags=["profiles"])
-
-BASE_DIR = Path(__file__).resolve().parents[2]  # عدّل لو مسارك مختلف
-PROFILES_DIR = (BASE_DIR / "profiles")
+# ─────────────────────────────
+# 🗂️ إعداد مجلد التخزين
+# ─────────────────────────────
+PROFILES_DIR = Path(__file__).resolve().parents[1] / "profiles"
+SAFE_SUFFIX = ".json"
 PROFILES_DIR.mkdir(parents=True, exist_ok=True)
 
-def _path_for(name: str) -> Path:
-    safe = "".join(c for c in name.strip() if c.isalnum() or c in "-_ .").strip()
-    if not safe:
-        raise HTTPException(status_code=400, detail="Invalid profile name")
-    return PROFILES_DIR / f"{safe}.json"
 
-@router.get("/", response_model=List[str])
+# ─────────────────────────────
+# 🔒 دوال مساعدة للتحقق من الأمان
+# ─────────────────────────────
+def _sanitize_name(name: str) -> str:
+    """
+    يتحقق من أن الاسم صالح: أحرف/أرقام/شرطات فقط.
+    يرفض أي محاولة لاختراق المسار مثل ../ أو رموز غير مسموحة.
+    """
+    s = (name or "").strip()
+    if not s:
+        raise ValueError("Empty profile name not allowed")
+
+    # فقط الحروف، الأرقام، الشرطات
+    if not re.fullmatch(r"[A-Za-z0-9_-]+", s):
+        raise ValueError("Invalid characters in profile name")
+
+    # حظر النقاط أو الشرطات الخلفية أو الأمامية
+    if any(x in s for x in ("..", "/", "\\", ".")):
+        raise ValueError("Invalid profile name")
+
+    return s
+
+
+def _safe_profile_path(name: str) -> Path:
+    """يُعيد مسارًا آمنًا داخل مجلد profiles فقط."""
+    base = _sanitize_name(name)
+    p = (PROFILES_DIR / f"{base}{SAFE_SUFFIX}").resolve()
+    if PROFILES_DIR.resolve() not in p.parents:
+        raise ValueError("Invalid path")
+    return p
+
+
+# ─────────────────────────────
+# 📦 نقاط الـ API
+# ─────────────────────────────
+
+@router.post("/profiles/save")
+def save_profile(item: dict):
+    """
+    يحفظ ملف بروفايل آمن بعد التحقق من صحته بـ Pydantic.
+    JSON المتوقع:
+      {
+        "name": "my_profile",
+        "profile": { ... هيكل Profile ... }
+      }
+    """
+    try:
+        profile = Profile(**(item.get("profile") or {}))
+    except ValidationError as e:
+        raise HTTPException(status_code=422, detail=e.errors())
+
+    name = item.get("name") or "profile"
+    try:
+        path = _safe_profile_path(name)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    # 🔧 dump بشكل متوافق مع Pydantic v2
+    data_dict = profile.model_dump(exclude_none=True)
+    path.write_text(json.dumps(data_dict, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    return {"ok": True, "file": path.name}
+
+
+# 🗂️ ضع المسار الثابت أولاً حتى لا يلتقطه {name}
+@router.get("/profiles/list")
 def list_profiles():
+    """يعيد قائمة بكل ملفات البروفايلات المخزنة."""
     return sorted(p.stem for p in PROFILES_DIR.glob("*.json"))
 
-@router.get("/{name}", response_model=Profile)
-def get_profile(name: str):
-    p = _path_for(name)
-    if not p.exists():
-        raise HTTPException(status_code=404, detail="Profile not found")
+
+@router.get("/profiles/{name}")
+def load_profile(name: str):
+    """يقرأ بروفايل JSON موجود."""
     try:
-        data = json.loads(p.read_text("utf-8"))
-        return Profile.model_validate(data)  # يعيد مع التحقق
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Corrupt file: {e}")
+        path = _safe_profile_path(name.replace(".json", ""))
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-@router.post("/{name}", response_model=Profile)
-def save_profile(name: str, profile: Profile):
-    p = _path_for(name)
-    data = profile.model_dump(exclude_none=True)
-    p.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-    return profile
-
-@router.delete("/{name}")
-def delete_profile(name: str):
-    p = _path_for(name)
-    if not p.exists():
+    if not path.exists():
         raise HTTPException(status_code=404, detail="Profile not found")
-    p.unlink()
-    return {"ok": True}
+
+    data = path.read_text(encoding="utf-8")
+    return Response(content=data, media_type="application/json; charset=utf-8")
+
+
+@router.delete("/profiles/{name}")
+def delete_profile(name: str):
+    """يحذف بروفايل بأمان."""
+    try:
+        path = _safe_profile_path(name)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    if not path.exists():
+        raise HTTPException(status_code=404, detail="Profile not found")
+
+    path.unlink()
+    return {"ok": True, "deleted": path.name}

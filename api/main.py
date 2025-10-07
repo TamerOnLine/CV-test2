@@ -32,14 +32,23 @@ LAYOUTS_DIR = APP_ROOT / "layouts"
 
 app = FastAPI(title="Resume API")
 
-# السماح للـStreamlit/واجهات أخرى بالوصول
+# ─────────────────────────────────────────────
+# 🧩 إعداد CORS الآمن
+# ─────────────────────────────────────────────
+ALLOWED_ORIGINS = [
+    "http://localhost:8501",      # Streamlit (تطوير محلي)
+    "http://127.0.0.1:8501",
+    # "https://your-domain.example",  # أضف هنا دومين الإنتاج لاحقًا
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type", "Authorization"],
 )
+# ─────────────────────────────────────────────
 
 # تسجيل راوتر إدارة البروفايلات
 app.include_router(profiles_routes.router, prefix="/api")
